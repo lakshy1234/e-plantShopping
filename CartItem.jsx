@@ -1,26 +1,26 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { incrementQuantity, decrementQuantity, removeItem } from "../redux/CartSlice";
+import { incrementQuantity, decrementQuantity, removeItem } from "./CartSlice";
 import { Link } from "react-router-dom";
+
+function calculateTotalAmount(items) {
+  return items.reduce((total, item) => total + item.price * item.quantity, 0);
+}
 
 function CartItem() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
-
-  const totalAmount = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
+  const totalAmount = calculateTotalAmount(cartItems);
 
   const handleCheckout = () => {
     alert("Coming Soon");
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      {/* Navbar */}
+    <div className="cart-page" style={{ padding: "20px" }}>
       <nav
+        className="navbar"
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -32,31 +32,34 @@ function CartItem() {
           marginBottom: "30px"
         }}
       >
-        <h2>Paradise Nursery</h2>
-        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-          <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+        <h2 className="brand-title">Paradise Nursery</h2>
+        <div className="nav-links" style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+          <Link className="nav-link" to="/">
             Home
           </Link>
-          <Link to="/plants" style={{ color: "white", textDecoration: "none" }}>
+          <Link className="nav-link" to="/plants">
             Plants
           </Link>
-          <Link to="/cart" style={{ color: "white", textDecoration: "none" }}>
-            Cart 🛒 ({totalQuantity})
+          <Link className="nav-link cart-link" to="/cart">
+            Cart ({totalQuantity})
           </Link>
         </div>
       </nav>
 
-      <h1 style={{ textAlign: "center", marginBottom: "20px" }}>Shopping Cart</h1>
+      <h1 className="cart-title" style={{ textAlign: "center", marginBottom: "20px" }}>
+        Shopping Cart
+      </h1>
 
-      <h2 style={{ textAlign: "center", color: "#2e7d32", marginBottom: "30px" }}>
-        Total Cart Amount: ${totalAmount}
+      <h2 className="total_cart_amount" style={{ textAlign: "center", color: "#2e7d32", marginBottom: "30px" }}>
+        Total Cart Amount: ${totalAmount.toFixed(2)}
       </h2>
 
       {cartItems.length === 0 ? (
-        <div style={{ textAlign: "center" }}>
+        <div className="empty-cart" style={{ textAlign: "center" }}>
           <p>Your cart is empty.</p>
           <Link to="/plants">
             <button
+              className="continue_shopping_btn"
               style={{
                 padding: "10px 16px",
                 border: "none",
@@ -75,6 +78,7 @@ function CartItem() {
           {cartItems.map((item) => (
             <div
               key={item.id}
+              className="cart-item-card"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -87,8 +91,9 @@ function CartItem() {
                 boxShadow: "0 2px 8px rgba(0,0,0,0.08)"
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "15px", flex: 1 }}>
+              <div className="cart-item-info" style={{ display: "flex", alignItems: "center", gap: "15px", flex: 1 }}>
                 <img
+                  className="cart-item-image"
                   src={item.image}
                   alt={item.name}
                   style={{
@@ -99,18 +104,19 @@ function CartItem() {
                   }}
                 />
                 <div>
-                  <h3>{item.name}</h3>
-                  <p>Unit Price: ${item.price}</p>
-                  <p>Quantity: {item.quantity}</p>
-                  <p style={{ fontWeight: "bold" }}>
-                    Total Price: ${item.price * item.quantity}
+                  <h3 className="cart-item-name">{item.name}</h3>
+                  <p className="cart-item-unit-price">Unit Price: ${item.price}</p>
+                  <p className="cart-item-quantity">Quantity: {item.quantity}</p>
+                  <p className="cart-item-total-price" style={{ fontWeight: "bold" }}>
+                    Total Price: ${(item.price * item.quantity).toFixed(2)}
                   </p>
                 </div>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                <div style={{ display: "flex", gap: "10px" }}>
+              <div className="cart-item-actions" style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                <div className="quantity-controls" style={{ display: "flex", gap: "10px" }}>
                   <button
+                    className="quantity_btn increment-btn"
                     onClick={() => dispatch(incrementQuantity(item.id))}
                     style={{
                       padding: "8px 12px",
@@ -125,6 +131,7 @@ function CartItem() {
                   </button>
 
                   <button
+                    className="quantity_btn decrement-btn"
                     onClick={() => dispatch(decrementQuantity(item.id))}
                     style={{
                       padding: "8px 12px",
@@ -140,6 +147,7 @@ function CartItem() {
                 </div>
 
                 <button
+                  className="delete_btn"
                   onClick={() => dispatch(removeItem(item.id))}
                   style={{
                     padding: "8px 12px",
@@ -157,6 +165,7 @@ function CartItem() {
           ))}
 
           <div
+            className="cart-footer-actions"
             style={{
               display: "flex",
               justifyContent: "center",
@@ -166,6 +175,7 @@ function CartItem() {
           >
             <Link to="/plants">
               <button
+                className="continue_shopping_btn"
                 style={{
                   padding: "12px 18px",
                   border: "none",
@@ -180,4 +190,24 @@ function CartItem() {
             </Link>
 
             <button
+              className="checkout_btn"
               onClick={handleCheckout}
+              style={{
+                padding: "12px 18px",
+                border: "none",
+                borderRadius: "6px",
+                backgroundColor: "#2e7d32",
+                color: "white",
+                cursor: "pointer"
+              }}
+            >
+              Checkout
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default CartItem;

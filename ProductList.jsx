@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem } from "../redux/CartSlice";
+import { addItem } from "./CartSlice";
 import { Link } from "react-router-dom";
 
 const plants = [
@@ -153,9 +153,10 @@ function ProductList() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div className="product-list-page" style={{ padding: "20px" }}>
       {/* Navbar */}
       <nav
+        className="navbar"
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -167,16 +168,16 @@ function ProductList() {
           marginBottom: "30px"
         }}
       >
-        <h2>Paradise Nursery</h2>
-        <div style={{ display: "flex", gap: "20px", alignItems: "center" }}>
-          <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+        <h2 className="brand-title">Paradise Nursery</h2>
+        <div className="nav-links" style={{ display: "flex", gap: "20px", alignItems: "center" }}>
+          <Link className="nav-link" to="/" style={{ color: "white", textDecoration: "none" }}>
             Home
           </Link>
-          <Link to="/plants" style={{ color: "white", textDecoration: "none" }}>
+          <Link className="nav-link" to="/plants" style={{ color: "white", textDecoration: "none" }}>
             Plants
           </Link>
-          <Link to="/cart" style={{ color: "white", textDecoration: "none" }}>
-            Cart 🛒 ({totalQuantity})
+          <Link className="nav-link cart-link" to="/cart" style={{ color: "white", textDecoration: "none" }}>
+            Cart ({totalQuantity})
           </Link>
         </div>
       </nav>
@@ -202,6 +203,7 @@ function ProductList() {
                 return (
                   <div
                     key={plant.id}
+                    className="plant-card"
                     style={{
                       border: "1px solid #ddd",
                       borderRadius: "10px",
@@ -212,6 +214,7 @@ function ProductList() {
                     }}
                   >
                     <img
+                      className="plant-image"
                       src={plant.image}
                       alt={plant.name}
                       style={{
@@ -221,10 +224,11 @@ function ProductList() {
                         borderRadius: "8px"
                       }}
                     />
-                    <h3 style={{ marginTop: "12px" }}>{plant.name}</h3>
-                    <p style={{ fontWeight: "bold", color: "#444" }}>${plant.price}</p>
+                    <h3 className="plant-name" style={{ marginTop: "12px" }}>{plant.name}</h3>
+                    <p className="plant-price" style={{ fontWeight: "bold", color: "#444" }}>${plant.price}</p>
 
                     <button
+                      className="add-to-cart-btn"
                       onClick={() => handleAddToCart(plant)}
                       disabled={added}
                       style={{
