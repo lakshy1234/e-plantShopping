@@ -6,7 +6,7 @@ A React and Redux based shopping application for houseplants.
 - Product listing page
 - Shopping cart page
 - Add to cart
-- Update quantity
+- Update quantities
 - Remove items
 - Continue shopping
 ``
